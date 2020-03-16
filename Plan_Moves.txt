@@ -1,0 +1,103 @@
+class Bitboard{
+    ...
+};
+
+class ChessBoard{
+    Chessboard(bitborad Pawns, ...)
+    Chessboard(Chessboard currentChessBoard, Move MoveApplied)  //return kainouria Chessboard dedomenis mias kinisis, dld ton startIndex kai endIndex
+                                                                //kai if an ginei capture 
+
+    movePawns{//legal check
+        array[Moves] resultArray;  
+     
+        temp[Bitboard] = BitboardPawns.Generate_left_captures(current); //ola ta bitboards pou proekypsan apo pawn moves
+
+        //APOPLEKW
+    
+        for bb in temp:  
+                                                        //LEGAL CHECK             
+            resultArray.add(  Move(Bitboard)  ))        // prosthetw sto resultArray to move
+                                                        // efarmozontas allages sto current Cheesboard 
+                    
+
+
+        //changes required p.x. occupied
+        return resultArray;//array apo kainouries moves pou prokiptoun apo pawns
+    }
+    moveKnights
+
+    ...
+    
+    array[Moves] getMoves{
+        movePawns + moveKnights + ...
+    }
+    getCapture(){return afterCApture}
+};
+
+class Move{
+    public:
+        Move();
+    protected:
+        int startIndex;
+        int endIndex;
+        bool isCapture;
+
+}
+
+class Node{
+    ...
+    Chessboard c;
+    moves = c.getMoves();
+    for Move in moves:
+        new Chessboard(c, Move);
+        node.addChild();
+
+    bool afterCapture; //
+
+};
+
+class BitboardPawns : Bitboard{
+    Bitboard current;
+    Bitboard Generate_left_captures(current){
+        return new Bitboard with pawn position after Left Captures
+    }
+    Bitboard Generate_right_captures(current){
+        return new Bitboard with pawn position after Right Captures
+    }
+    Bitboard Generate_front_moves(current){
+        return new Bitboard with pawn position after front moves
+    }
+    Bitboard Generate_double_front_moves(current){
+        return new Bitboard with pawn position after front moves
+    }
+    //ekkremei an passan
+    array[bitboards] Extract_moves(current, all of the above bitboards) //ginetai apoplexi 
+        return array of possible pawn moves   
+}
+
+class Knights{
+    Bitboard current;
+    list[] extract_knights_index(current){
+        return list of indexes of knights
+    }
+    Bitboard Generate_moves_from_index(index){
+        return  precalculated moves given an index
+    }  
+};
+
+Same class for King ??
+
+class Bishop{
+    Bitboard current
+    list[] extract_bishop_index(current){
+        return list of indexes of knights
+    }
+    Bitboard Get_Blockers(current ChessBoard position, index)
+        return Bitboard with 1 where blocker
+    
+    moves Generate_moves_from_index(index){
+        return precalculated moves given an index
+    }
+};
+
+Same for Rook, Queen
