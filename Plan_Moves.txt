@@ -5,43 +5,50 @@ class Bitboard{
 class ChessBoard{
     Chessboard(bitborad Pawns, ...)
     Chessboard(Chessboard currentChessBoard, Move MoveApplied)  //return kainouria Chessboard dedomenis mias kinisis, dld ton startIndex kai endIndex
-                                                                //kai if an ginei capture 
+                                                                //kai if an ginei capture
 
-    movePawns{//legal check
-        array[Moves] resultArray;  
-     
-        temp[Bitboard] = BitboardPawns.Generate_left_captures(current); //ola ta bitboards pou proekypsan apo pawn moves
-
-        //APOPLEKW
-    
-        for bb in temp:  
-                                                        //LEGAL CHECK             
-            resultArray.add(  Move(Bitboard)  ))        // prosthetw sto resultArray to move
-                                                        // efarmozontas allages sto current Cheesboard 
-                    
-
-
-        //changes required p.x. occupied
-        return resultArray;//array apo kainouries moves pou prokiptoun apo pawns
-    }
-    moveKnights
-
-    ...
-    
     array[Moves] getMoves{
-        movePawns + moveKnights + ...
+        if (check) {
+            ...
+        }
+        bb King_moves_legal();
+        //apople3e, orise moves kai append to resultArray
+        
+        Bitboard [pins, pinners] = find_pins(); //see xRayAttacks
+        for pins {
+            
+            //only move along the pin direction (easy since we have each pinner)     
+        
+        }
+        for !pins { //NOT(XOR(White, pins))
+        
+            BitboardPawns -= pins;
+            temp[Bitboard] = BitboardPawns.Generate_left_captures(current);
+            for bb in temp:                             //apople3e, orise moves kai append to resultArray
+                resultArray.add(  Move(Bitboard, )  )) 
+            //etc
+            revert this: BitboardPawns -= pins;
+        
+            ...
+        
+        } 
+        
+        
+
+
+        return resultArray;
+        //WHAT IS "changes required p.x. occupied"?
+
     }
-    getCapture(){return afterCApture}
 };
 
-class Move{
+class Move {
     public:
-        Move();
+        Move(start,end,isCapture);
     protected:
         int startIndex;
         int endIndex;
         bool isCapture;
-
 }
 
 class Node{
@@ -71,8 +78,6 @@ class BitboardPawns : Bitboard{
         return new Bitboard with pawn position after front moves
     }
     //ekkremei an passan
-    array[bitboards] Extract_moves(current, all of the above bitboards) //ginetai apoplexi 
-        return array of possible pawn moves   
 }
 
 class Knights{
@@ -82,7 +87,7 @@ class Knights{
     }
     Bitboard Generate_moves_from_index(index){
         return  precalculated moves given an index
-    }  
+    }
 };
 
 Same class for King ??
@@ -94,7 +99,7 @@ class Bishop{
     }
     Bitboard Get_Blockers(current ChessBoard position, index)
         return Bitboard with 1 where blocker
-    
+
     moves Generate_moves_from_index(index){
         return precalculated moves given an index
     }
