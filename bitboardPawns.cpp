@@ -7,7 +7,7 @@
             ->Maybe we should merge BitboardWhitePawns and BitboardBlackPawns using a condition inside BitboardPawns
 */
 Bitboard BitboardWhitePawns::generateLeftCaptures(const Bitboard &opponentColor) {
-    return Bitboard( (bb << 7) & notHFile &opponentColor.getBitboard());
+    return Bitboard( (bb << 7) & notHFile & opponentColor.getBitboard());
 }
 Bitboard BitboardWhitePawns::generateRightCaptures(const Bitboard &opponentColor) {
     return Bitboard( (bb << 9) & notAFile & opponentColor.getBitboard());
