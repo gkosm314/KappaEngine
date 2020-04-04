@@ -8,36 +8,51 @@ typedef unsigned long long int U64;
 class Bitboard {
     public: 
         Bitboard(U64 dec); //decimal to bitboard
-        std::list<int> extractIndexes();
+        std::list<int> extractIndexes() const;
         void bitToggle(int index); //index: 0-64 (maybe needs overload ?)
-        Bitboard getComplement();
-        U64 getBitboard() {return bb;}
+        Bitboard getComplement() const;
+        U64 getBitboard() const{return bb;}
         friend std::ostream& operator<<(std::ostream &out, Bitboard bit); //prints as chessboard
-        void printNumber();                                               //prints number
-        bool empty();
+        void printNumber() const;                                               //prints number
+        bool empty() const;
     protected:
         U64 bb; //bitboard 64bit
         int BitScanForward();
+        static const U64 notAFile = 0xfefefefefefefefe;
+        static const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
+        static const U64 notABFile = 0xFCFCFCFCFCFCFCFC;
+        static const U64 notGHFile = 0x3F3F3F3F3F3F3F3F;
+        static const U64 secondRank =  (1ULL << 16)-1;
+        static const U64 eighthRank =   (1ULL << 63)-1;
 };
 
 class BitboardPawns : public Bitboard { //protected or public ??
     public:
-        Bitboard generateLeftCaptures();  //remember overflow mask 
-        Bitboard generateRightCaptures(); //remember overflow mask 
-        Bitboard generateFrontMoves();
-        Bitboard generateDoubleFrontMoves(); //AND with second rank!!! -> push with generateFrontMoves() -> push again(avoid jumping)
-        Bitboard generateEnPassant(Bitboard PreviousDoubleFrontMoves);      
-            //shift PreviousDoubleFrontMoves eight back = bitboard A
-            //generate left and right captures
-            //exclude already produced captures (by logical AND with the bitboard A)
-       
-        
-        //promotions
+        virtual Bitboard generateLeftCaptures(const Bitboard &opponentColor) = 0;  //remember overflow mask 
+        virtual Bitboard generateRightCaptures(const Bitboard &opponentColor) = 0; //remember overflow mask 
+        virtual Bitboard generateFrontMoves(const Bitboard &unoccupied) = 0;
+        virtual Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied) = 0; //AND with second rank!!! -> push with generateFrontMoves() -> push again(avoid jumping)
+};  
+
+class BitboardWhitePawns : BitboardPawns {
+    public:
+        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask 
+        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask 
+        Bitboard generateFrontMoves(const Bitboard &unoccupied);
+        Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied);
+};  
+
+class BitboardBlackPawns : BitboardPawns {
+    public:
+        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask 
+        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask 
+        Bitboard generateFrontMoves(const Bitboard &unoccupied);
+        Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied);
 };  
 
 class BitboardKnights : public Bitboard { 
     public:
-        Bitboard knightMoves(int index); //exception if index does not really correspond to Knight
+        Bitboard knightMoves(int knightIndex, const Bitboard &sameColor); //exception if index does not really correspond to Knight
         static void initialize();                 //may become global
     protected: 
         static Bitboard precalculatedKnights[64]; //may become global       
@@ -71,10 +86,12 @@ class BitboardKing : public Bitboard{
 
 class Move {
     public:
-        Move(int start, int end, bool capture) : startIndex(start), endIndex(end), isCapture(capture) {};
+        Move(int start, int end, bool capture, bool spmove, bool dpmove) : startIndex(start), endIndex(end), isCapture(capture), isSinglePawnMove(spmove),isDoublePawnMove(dpmove){};
     private:
         int startIndex, endIndex;
         bool isCapture;
+        bool isSinglePawnMove; //useful for promotions
+        bool isDoublePawnMove;
 };
 
 class Chessboard { // :)
@@ -85,7 +102,8 @@ class Chessboard { // :)
         std::list<Move> getMoves(); //dont forget castling, legal check
     private:
         Bitboard allWhite, allBlack;
-        BitboardPawns whitePawns, blackPawns;
+        BitboardWhitePawns whitePawns;
+        BitboardBlackPawns blackPawns;
         BitboardKnights whiteKnights, blackKnights;
         BitboardBishops whiteBishops, blackBishops;
         BitboardRooks whiteRooks, blackRooks;
@@ -93,4 +111,5 @@ class Chessboard { // :)
         BitboardKing whiteKing, blackKing;
         Bitboard occupied, unoccupied;
         bool whiteCastlingLeft, whiteCastlingRight, blackCastlingLeft, blackCastlingRight;
+        bool whitesTurn;
 };
