@@ -18,10 +18,12 @@ class Bitboard {
     protected:
         U64 bb; //bitboard 64bit
         int BitScanForward();
-        const U64 notAFile = 0xfefefefefefefefe;
-        const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
-        const U64 secondRank =  (1ULL << 16)-1;
-        const U64 eighthRank =   (1ULL << 63)-1;
+        static const U64 notAFile = 0xfefefefefefefefe;
+        static const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
+        static const U64 notABFile = 0xFCFCFCFCFCFCFCFC;
+        static const U64 notGHFile = 0x3F3F3F3F3F3F3F3F;
+        static const U64 secondRank =  (1ULL << 16)-1;
+        static const U64 eighthRank =   (1ULL << 63)-1;
 };
 
 class BitboardPawns : public Bitboard { //protected or public ??
@@ -50,7 +52,7 @@ class BitboardBlackPawns : BitboardPawns {
 
 class BitboardKnights : public Bitboard { 
     public:
-        Bitboard knightMoves(int index); //exception if index does not really correspond to Knight
+        Bitboard knightMoves(int knightIndex, const Bitboard &sameColor); //exception if index does not really correspond to Knight
         static void initialize();                 //may become global
     protected: 
         static Bitboard precalculatedKnights[64]; //may become global       
@@ -84,10 +86,11 @@ class BitboardKing : public Bitboard{
 
 class Move {
     public:
-        Move(int start, int end, bool capture, bool dpmove) : startIndex(start), endIndex(end), isCapture(capture), isDoublePawnMove(dpmove){};
+        Move(int start, int end, bool capture, bool spmove, bool dpmove) : startIndex(start), endIndex(end), isCapture(capture), isSinglePawnMove(spmove),isDoublePawnMove(dpmove){};
     private:
         int startIndex, endIndex;
         bool isCapture;
+        bool isSinglePawnMove; //useful for promotions
         bool isDoublePawnMove;
 };
 
@@ -108,4 +111,5 @@ class Chessboard { // :)
         BitboardKing whiteKing, blackKing;
         Bitboard occupied, unoccupied;
         bool whiteCastlingLeft, whiteCastlingRight, blackCastlingLeft, blackCastlingRight;
+        bool whitesTurn;
 };
