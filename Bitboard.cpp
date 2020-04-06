@@ -1,7 +1,7 @@
 #include "bitboard.hpp"
 
 
-Bitboard::Bitboard(U64 dec){
+Bitboard::Bitboard(U64 dec) {
     bb = dec;
 }
 
@@ -10,7 +10,7 @@ int Bitboard::BitScanForward() {
 	 * returns the index of LSB between [0,63]
 	 * adapted by CPW, original by @author Kim Walisch (2012)
 	 */
-	if (!bb) throw "empty bitboard";
+	if (!bb) throw empty_bitboard();
     const int index64[64] = {
    		 0, 47,  1, 56, 48, 27,  2, 60,
    		57, 49, 41, 37, 28, 16,  3, 61,
@@ -26,7 +26,7 @@ int Bitboard::BitScanForward() {
     return index64[((bb ^ (bb-1)) * debruijn64) >> 58];
 }
 
-void Bitboard::printNumber() {
+void Bitboard::printNumber() const{
     std::cout << bb;
     return;
 }
@@ -43,11 +43,11 @@ std::ostream& operator<<(std::ostream &out, const Bitboard board){
     return out;
 }
 
-bool Bitboard::empty() {
+bool Bitboard::empty() const {
     return bb == 0;
 }
 
-Bitboard Bitboard::getComplement() {
+Bitboard Bitboard::getComplement() const {
     return Bitboard(~bb);
 }
 
@@ -55,13 +55,12 @@ void Bitboard::bitToggle(int index) {
     bb ^= (1ULL << index);
     return ;
 }
-std::list<int> Bitboard::extractIndexes() {
+std::list<int> Bitboard::extractIndexes() const {
+    Bitboard temp = *this;
     std::list<int> myList;
-	while (bb) {
-		myList.push_back(Bitboard::BitScanForward());
-		bb &= bb-1; //reset LSB
+	while (temp.bb) {
+		myList.push_back(temp.BitScanForward());
+		temp.bb &= temp.bb-1; //reset LSB
 	}
 	return myList;
 }
-
-

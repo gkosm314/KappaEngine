@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include <exception>
 
 typedef unsigned long long int U64;  
 #define C64(constantU64) constantU64##ULL 
@@ -15,15 +16,17 @@ class Bitboard {
         friend std::ostream& operator<<(std::ostream &out, Bitboard bit); //prints as chessboard
         void printNumber() const;                                               //prints number
         bool empty() const;
+        int BitScanForward();
     protected:
         U64 bb; //bitboard 64bit
-        int BitScanForward();
         static const U64 notAFile = 0xfefefefefefefefe;
         static const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
         static const U64 notABFile = 0xFCFCFCFCFCFCFCFC;
         static const U64 notGHFile = 0x3F3F3F3F3F3F3F3F;
+        static const U64 firstRank = (1ULL << 8)-1; 
         static const U64 secondRank =  (1ULL << 16)-1;
         static const U64 eighthRank =   (1ULL << 63)-1;
+        class empty_bitboard : public std::exception {};
 };
 
 class BitboardPawns : public Bitboard { //protected or public ??
@@ -63,7 +66,8 @@ class BitboardRooks : public Bitboard {
         Bitboard RookMoves(int index, Bitboard occupiedBitboard); //check if we include last blocker
     protected:
         enum rookDirection {north, south, west, east}; //??
-        U64 rookRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty
+        static U64 rookRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty
+        void initializeRookRays();
 };
 
 class BitboardBishops : public Bitboard {
@@ -71,7 +75,7 @@ class BitboardBishops : public Bitboard {
         Bitboard BishopMoves(int index, Bitboard occupiedBitboard); //check if we include last blocker
     protected:
         enum bishopDirection {northWest, southWest, northEast, southEast}; //??
-        U64 bishopRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty    
+        static U64 bishopRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty    
 };
 
 class BitboardQueens : public BitboardRooks, public BitboardBishops {
