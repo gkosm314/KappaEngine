@@ -16,7 +16,8 @@ class Bitboard {
         friend std::ostream& operator<<(std::ostream &out, Bitboard bit); //prints as chessboard
         void printNumber() const;                                               //prints number
         bool empty() const;
-        int BitScanForward();
+        int bitScanForward();
+        int bitScanReverse();
     protected:
         U64 bb; //bitboard 64bit
         static const U64 notAFile = 0xfefefefefefefefe;
