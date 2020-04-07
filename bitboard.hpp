@@ -3,11 +3,11 @@
 #include <string>
 #include <exception>
 
-typedef unsigned long long int U64;  
-#define C64(constantU64) constantU64##ULL 
+typedef unsigned long long int U64;
+#define C64(constantU64) constantU64##ULL
 
 class Bitboard {
-    public: 
+    public:
         Bitboard(U64 dec); //decimal to bitboard
         std::list<int> extractIndexes() const;
         void bitToggle(int index); //index: 0-64 (maybe needs overload ?)
@@ -23,7 +23,7 @@ class Bitboard {
         static const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
         static const U64 notABFile = 0xFCFCFCFCFCFCFCFC;
         static const U64 notGHFile = 0x3F3F3F3F3F3F3F3F;
-        static const U64 firstRank = (1ULL << 8)-1; 
+        static const U64 firstRank = (1ULL << 8)-1;
         static const U64 secondRank =  (1ULL << 16)-1;
         static const U64 eighthRank =   (1ULL << 63)-1;
         class empty_bitboard : public std::exception {};
@@ -31,51 +31,56 @@ class Bitboard {
 
 class BitboardPawns : public Bitboard { //protected or public ??
     public:
-        virtual Bitboard generateLeftCaptures(const Bitboard &opponentColor) = 0;  //remember overflow mask 
-        virtual Bitboard generateRightCaptures(const Bitboard &opponentColor) = 0; //remember overflow mask 
+        virtual Bitboard generateLeftCaptures(const Bitboard &opponentColor) = 0;  //remember overflow mask
+        virtual Bitboard generateRightCaptures(const Bitboard &opponentColor) = 0; //remember overflow mask
         virtual Bitboard generateFrontMoves(const Bitboard &unoccupied) = 0;
         virtual Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied) = 0; //AND with second rank!!! -> push with generateFrontMoves() -> push again(avoid jumping)
-};  
+};
 
 class BitboardWhitePawns : BitboardPawns {
     public:
-        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask 
-        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask 
+        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
+        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
         Bitboard generateFrontMoves(const Bitboard &unoccupied);
         Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied);
-};  
+
+};
 
 class BitboardBlackPawns : BitboardPawns {
     public:
-        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask 
-        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask 
+        Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
+        Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
         Bitboard generateFrontMoves(const Bitboard &unoccupied);
         Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied);
-};  
+};
 
-class BitboardKnights : public Bitboard { 
+class BitboardKnights : public Bitboard {
     public:
+        BitboardKnights(U64 dec);
         Bitboard knightMoves(int knightIndex, const Bitboard &sameColor); //exception if index does not really correspond to Knight
         static void initialize();                 //may become global
-    protected: 
-        static Bitboard precalculatedKnights[64]; //may become global       
+    protected:
+        static Bitboard precalculatedKnights[64]; //may become global
 };
 
 class BitboardRooks : public Bitboard {
     public:
+        BitboardRooks(U64 dec);
         Bitboard RookMoves(int index, Bitboard occupiedBitboard); //check if we include last blocker
+
     protected:
         enum rookDirection {north, south, west, east}; //??
         static U64 rookRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty
-        void initializeRookRays();
+        void static initializeRookRays(); //TODO static or not ?
 };
 
 class BitboardBishops : public Bitboard {
     public:
+        BitboardBishops(U64 dec);
         Bitboard BishopMoves(int index, Bitboard occupiedBitboard); //check if we include last blocker
     protected:
         enum bishopDirection {northWest, southWest, northEast, southEast}; //??
-        static U64 bishopRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty    
+        static U64 bishopRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty
 };
 
 class BitboardQueens : public BitboardRooks, public BitboardBishops {
