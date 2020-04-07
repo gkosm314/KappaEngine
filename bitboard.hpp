@@ -31,14 +31,16 @@ class Bitboard {
 
 class BitboardPawns : public Bitboard { //protected or public ??
     public:
+        BitboardPawns(U64 dec) : Bitboard(dec) {}
         virtual Bitboard generateLeftCaptures(const Bitboard &opponentColor) = 0;  //remember overflow mask
         virtual Bitboard generateRightCaptures(const Bitboard &opponentColor) = 0; //remember overflow mask
         virtual Bitboard generateFrontMoves(const Bitboard &unoccupied) = 0;
         virtual Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied) = 0; //AND with second rank!!! -> push with generateFrontMoves() -> push again(avoid jumping)
 };
 
-class BitboardWhitePawns : BitboardPawns {
+class BitboardWhitePawns : public BitboardPawns {
     public:
+        BitboardWhitePawns(U64 dec) : BitboardPawns(dec) {}
         Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
         Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
         Bitboard generateFrontMoves(const Bitboard &unoccupied);
@@ -46,8 +48,9 @@ class BitboardWhitePawns : BitboardPawns {
 
 };
 
-class BitboardBlackPawns : BitboardPawns {
+class BitboardBlackPawns : public BitboardPawns {
     public:
+        BitboardBlackPawns(U64 dec) : BitboardPawns(dec) {}
         Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
         Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
         Bitboard generateFrontMoves(const Bitboard &unoccupied);
