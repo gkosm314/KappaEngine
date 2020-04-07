@@ -37,7 +37,7 @@ class BitboardPawns : public Bitboard { //protected or public ??
         virtual Bitboard generateDoubleFrontMoves(const Bitboard &unoccupied) = 0; //AND with second rank!!! -> push with generateFrontMoves() -> push again(avoid jumping)
 };
 
-class BitboardWhitePawns : BitboardPawns {
+class BitboardWhitePawns : public BitboardPawns {
     public:
         Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
         Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
@@ -46,7 +46,7 @@ class BitboardWhitePawns : BitboardPawns {
 
 };
 
-class BitboardBlackPawns : BitboardPawns {
+class BitboardBlackPawns : public BitboardPawns {
     public:
         Bitboard generateLeftCaptures(const Bitboard &opponentColor) ;  //remember overflow mask
         Bitboard generateRightCaptures(const Bitboard &opponentColor); //remember overflow mask
