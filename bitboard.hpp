@@ -20,7 +20,7 @@ class Bitboard {
         int bitScanReverse();
     protected:
         U64 bb; //bitboard 64bit
-        static const U64 fullBitboard = 0xFFFFFFFFFFFFFFFF
+        static const U64 fullBitboard = 0xFFFFFFFFFFFFFFFF;
         static const U64 notAFile = 0xfefefefefefefefe;
         static const U64 notHFile = 0x7f7f7f7f7f7f7f7f;
         static const U64 notABFile = 0xFCFCFCFCFCFCFCFC;
