@@ -86,6 +86,7 @@ class BitboardBishops : public Bitboard {
     protected:
         enum bishopDirection {northWest, southWest, northEast, southEast}; //??
         static U64 bishopRays[4][64]; //rays[direction][index]  -  possible moves when chessboard is empty
+        void static initializeBishopRays(); 
 };
 
 class BitboardQueens : public BitboardRooks, public BitboardBishops {
