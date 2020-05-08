@@ -7,7 +7,7 @@
 				and decide if i will include blocker or not in the attack set.
 				Then use Move and Chessboard classes to toggle based on specific targetSquare.
 
-		SUGGESTION 2: Generate capture attack-sets independently by returning unionOfFirstBlockers AND opponentColor
+		SUGGESTION 2:   Generate capture attack-sets independently by returning unionOfFirstBlockers AND opponentColor
 */
 
 BitboardBishops::BitboardBishops(U64 dec): Bitboard(dec) {}
