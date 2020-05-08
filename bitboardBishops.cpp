@@ -1,11 +1,11 @@
 #include "bitboard.cpp" 
 
 /*
-		WARNING:			This class is still UNTESTED.
+		WARNING:	This class is still UNTESTED.
 
 		SUGGESTION: 	Add whiteColor and blackColor as parameter in Moves function 
-										and decide if i will include blocker or not in the attack set.
-										Then use Move and Chessboard classes to toggle based on specific targetSquare.
+				and decide if i will include blocker or not in the attack set.
+				Then use Move and Chessboard classes to toggle based on specific targetSquare.
 
 		SUGGESTION 2: Generate capture attack-sets independently by returning unionOfFirstBlockers AND opponentColor
 */
@@ -22,16 +22,16 @@ void BitboardBishops::initializeBishopRays() {
 
 	/*Each of the following initialized attacksets is one of the 2 main diagonials excluding one corner each time written in hex*/
 
-	bishopRays[0][0] 	= 		0x8040201008040200;
-	bishopRays[1][7]  =		0x102040810204000;
-	bishopRays[2][63]  =	0x40201008040201;
-	bishopRays[3][56]  =	0x2040810204080;
+	bishopRays[0][0]   =  0x8040201008040200;
+	bishopRays[1][7]   =  0x102040810204000;
+	bishopRays[2][63]  =  0x40201008040201;
+	bishopRays[3][56]  =  0x2040810204080;
 
 	for(int i = 1; i < 8; i++){
-		bishopRays[0][i] 		= bishopRays[0][i-1]<<1 & Bitboard::notAFile;
-		bishopRays[1][7-i] 	= bishopRays[1][7-i+1]>>1 & Bitboard::notHFile;
+		bishopRays[0][i] = bishopRays[0][i-1]<<1 & Bitboard::notAFile;
+		bishopRays[1][7-i] = bishopRays[1][7-i+1]>>1 & Bitboard::notHFile;
 		bishopRays[2][63-i] = bishopRays[2][63-i+1]>>1 & Bitboard::notHFile;
-		bishopRays[3][i] 		= bishopRays[3][i-1]<<1 & Bitboard::notAFile;
+		bishopRays[3][i] = bishopRays[3][i-1]<<1 & Bitboard::notAFile;
 	}
 	
 	for (int file = 0; file < 8; file++) {
